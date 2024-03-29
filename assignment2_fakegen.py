@@ -1,24 +1,3 @@
-'''from faker import Faker
-fake = Faker()
-Faker.seed(20052)
-#CUSTOMER
-namelist = [fake.name() for _ in range(1000)]
-
-emaillist = [fake.email() for _ in range(1000)]'''
-
-
-
-from mimesis import Person
-from mimesis.locales import Locale
-person = Person(Locale.En)
-
-
-namelist, emaillist = [(person.full_name(), person.email()) for _ in range(1000)]
-
-
-
-
-
 from mimesis import Field, Fieldset, Schema
 from mimesis.enums import Gender, TimestampFormat
 from mimesis.locales import Locale
@@ -41,9 +20,6 @@ schema_definition = lambda: {
 
 schema = Schema(schema=schema_definition, iterations=3)
 schema.create()
-
-
-
 
 
 customer_schema_def = lambda: {
