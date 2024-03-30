@@ -35,11 +35,32 @@ order_schema_def = lambda: {
 order_schema = Schema(schema=order_schema_def, iterations=1000)
 order_dict = order_schema.create()
 
+orderdf = pandas.DataFrame.from_dict(order_dict)
+
 
 fooddf = pandas.read_csv("C:\\Users\\russe\\OneDrive\\Desktop\\class_materials\\DATS6102\\assignments\\erd_star_assignment2\\food.csv")
 
 fooddf = fooddf[['Category','Description']]
-fooddf = fooddf.loc[fooddf['Description'].str.len() < 20]
+fooddf = fooddf.loc[fooddf['Description'].str.len() < 20].reset_index(drop=True)
 fooddf.rename(columns={"Description":"ProductName"}, inplace=True)
 
-fooddf['Price'] = numbers.floats(start=0, end=500, n=fooddf.shape[0], precision=2)
+fdf_rowcount = fooddf.shape[0]
+
+fooddf['Price'] = numbers.floats(start=0, end=500, n=fdf_rowcount, precision=2)
+
+
+orderdetail_schema_def = lambda: {
+    "OrderID": field("integer_number",start=1,end=1001),
+    "ProductID": field("integer_number",start=1,end=fdf_rowcount),
+    "Quantity": field("integer_number",start=1,end=51)
+}
+
+orderdetail_schema = Schema(schema=orderdetail_schema_def, iterations=1000)
+orderdetail_dict = orderdetail_schema.create()
+
+orderdetaildf = pandas.DataFrame.from_dict(orderdetail_dict)
+
+orderdetaildf = (pandas.merge(orderdetaildf,fooddf[['Price']],how='left',left_on='ProductID',right_index=True)
+                        .rename(columns={"Price":"UnitPrice"}))
+                        
+orderdf['Total'] =                         
