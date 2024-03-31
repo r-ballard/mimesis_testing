@@ -111,5 +111,5 @@ orderdf = (pandas.merge(orderdf,orderdetailpivot,how='left',left_index=True,righ
                  .rename(columns={"detailsum":"TotalAmount"}))
 
 #Once we have total, we then write orderdf to file
-orderdf.to_csv(path_or_buf="{out_path}erd_orders.csv",
+orderdf.to_csv(path_or_buf=f"{out_path}erd_orders.csv",
                 index=False)
